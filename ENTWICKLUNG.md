@@ -3,8 +3,7 @@
 Technische Beschreibung des Projekts. Für die Spielanleitung siehe
 [README.md](README.md).
 
-Top-Down-Lernspiel im Pixel-Look auf dem Gelände des Campus Klarenthal.
-Vanilla HTML5 / CSS3 / JavaScript, keine Frameworks, keine Build-Tools.
+Vanilla HTML5 / CSS / JS  -- Hardcoded
 
 ## Ordnerstruktur
 
@@ -14,7 +13,7 @@ lernspiel/
 ├── README.md               Spielanleitung
 ├── ENTWICKLUNG.md          diese Datei
 ├── css/
-│   └── style.css           Pixel-UI, responsiv für Handy und Desktop
+│   └── style.css           Pixel-UI
 ├── js/
 │   ├── main.js             Einstiegspunkt: Menü zeigen, Bilder laden
 │   ├── assets.js           Bilder und JSON laden
@@ -37,11 +36,8 @@ lernspiel/
 
 ## Starten
 
-Doppelklick auf `index.html` genügt. Das Spiel braucht keinen Server,
-keinen Build und keine Internetverbindung — die Schriftart wird
-nachgeladen, fehlt sie, greift eine Systemschrift.
+Aufn Server ziehen, secret key beim 1. Start eingeben und gib ihm.
 
-Online läuft es genauso, z. B. über GitHub Pages.
 
 ## Steuerung
 

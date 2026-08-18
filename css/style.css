@@ -1,7 +1,4 @@
-/* Campus Klarenthal — Lernspiel
-   Farbwelt aus der Karte: Sandstein, Dachziegel, Klostergrün, Waldschatten.
-   'Press Start 2P' nur für Überschriften und Bedienelemente; Fließtext in
-   einer Leseschrift, weil Pixelschrift in Absätzen unlesbar wird. */
+
 
 :root {
   --ink: #14181f;
@@ -52,7 +49,7 @@ body {
   touch-action: none;
 }
 
-/* ---------- Pixel-Rahmen (gemeinsame Grundform) ---------- */
+
 
 .pixel-frame,
 .menu-box,
@@ -69,7 +66,7 @@ body {
     0 0 0 6px var(--ink-soft);
 }
 
-/* ---------- Fehlermeldung ---------- */
+
 
 #error {
   position: fixed;
@@ -85,7 +82,7 @@ body {
 .load-title { font-family: var(--pixel); font-size: 13px; margin: 0; }
 .load-text { margin: 0; font-size: 14px; color: var(--paper-dim); max-width: 34ch; }
 
-/* ---------- Startbildschirm ---------- */
+
 
 #menu {
   touch-action: pan-y;
@@ -176,7 +173,7 @@ kbd {
   border-bottom: 2px solid #000;
 }
 
-/* ---------- Buttons ---------- */
+
 
 .btn, .option {
   font-family: var(--pixel);
@@ -193,7 +190,7 @@ kbd {
 .btn:focus-visible, .option:focus-visible { outline: 3px solid var(--brass); outline-offset: 4px; }
 .option:disabled { cursor: default; opacity: 0.85; }
 
-/* ---------- HUD ---------- */
+
 
 #hud {
   position: fixed;
@@ -255,7 +252,7 @@ kbd {
   pointer-events: none;
 }
 
-/* ---------- Touch-Steuerung ---------- */
+
 
 #touch {
   position: fixed;
@@ -315,7 +312,7 @@ kbd {
   #touch { display: none; }
 }
 
-/* ---------- Dialogfenster ---------- */
+
 
 #overlay {
   touch-action: pan-y;

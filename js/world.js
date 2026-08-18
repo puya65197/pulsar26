@@ -1,4 +1,4 @@
-// Karte, Kollisionsraster, Stationen und Kamera.
+
 
 const INTERACT_RADIUS = 20;
 
@@ -28,7 +28,7 @@ class World {
     return this.stations.find((s) => s.id === id) || null;
   }
 
-  /** Im Quiz-Modus ist eine Station gesperrt, solange ihre Vorgaengerin offen ist. */
+
   isLocked(station, mode) {
     if (mode !== 'quiz' || !station.requires) return false;
     const prev = this.stationById(station.requires);
@@ -42,7 +42,7 @@ class World {
     return this.grid[cy][cx] === 1;
   }
 
-  /** Prueft die Fusszone des Spielers (Rechteck) gegen das Raster. */
+
   boxBlocked(left, top, w, h) {
     const x0 = Math.floor(left / this.cell);
     const x1 = Math.floor((left + w - 1) / this.cell);

@@ -7,25 +7,25 @@ Sheet-Layout (64 x 96 px):
 from PIL import Image
 
 OUT = "../assets/player.png"
-CW, CH = 16, 24          # Zellgroesse
+CW, CH = 16, 24          
 COLS, ROWS = 4, 4
 
 PALETTE = {
     ".": None,
-    "o": (27, 31, 42),        # Kontur
-    "h": (58, 42, 31),        # Haar
-    "H": (85, 64, 44),        # Haar-Glanzlicht
-    "s": (232, 185, 140),     # Haut
-    "S": (200, 146, 106),     # Haut-Schatten
-    "e": (27, 31, 42),        # Auge
-    "j": (47, 111, 158),      # Jacke
-    "J": (36, 90, 128),       # Jacke-Schatten
-    "k": (122, 74, 44),       # Rucksack
-    "p": (51, 64, 92),        # Hose
-    "b": (42, 42, 46),        # Schuh
+    "o": (27, 31, 42),        
+    "h": (58, 42, 31),        
+    "H": (85, 64, 44),        
+    "s": (232, 185, 140),     
+    "S": (200, 146, 106),     
+    "e": (27, 31, 42),        
+    "j": (47, 111, 158),      
+    "J": (36, 90, 128),       
+    "k": (122, 74, 44),       
+    "p": (51, 64, 92),        
+    "b": (42, 42, 46),        
 }
 
-# --- Koepfe (Zeilen 3..12 der Zelle) ---
+
 HEAD_FRONT = [
     ".....oooooo.....",
     "....ohhhhhho....",
@@ -63,7 +63,7 @@ HEAD_BACK = [
     ".....oooooo.....",
 ]
 
-# --- Rumpf (Zeilen 13..18) ---
+
 BODY_FRONT = [
     "...ojjjjjjjjo...",
     "...ojjjjjjjjo...",
@@ -89,7 +89,7 @@ BODY_BACK = [
     "...oojkkkkjoo...",
 ]
 
-# --- Beine (Zeilen 19..23), ein Satz je Laufframe ---
+
 LEGS_STAND = [
     "....oppppppo....",
     "....oppooppo....",
@@ -113,7 +113,7 @@ LEGS_STEP_R = [
 ]
 LEG_CYCLE = [LEGS_STAND, LEGS_STEP_L, LEGS_STAND, LEGS_STEP_R]
 
-BLANK = ["." * CW] * 3     # Zeilen 0..2 bleiben frei (Kopffreiraum)
+BLANK = ["." * CW] * 3     
 
 
 def build_cell(head, body, legs):
@@ -137,10 +137,10 @@ def draw(sheet, rows, ox, oy, mirror=False):
 sheet = Image.new("RGBA", (CW * COLS, CH * ROWS), (0, 0, 0, 0))
 
 directions = [
-    (HEAD_FRONT, BODY_FRONT, False),   # unten
-    (HEAD_SIDE, BODY_SIDE, False),     # links
-    (HEAD_SIDE, BODY_SIDE, True),      # rechts (gespiegelt)
-    (HEAD_BACK, BODY_BACK, False),     # oben
+    (HEAD_FRONT, BODY_FRONT, False),   
+    (HEAD_SIDE, BODY_SIDE, False),     
+    (HEAD_SIDE, BODY_SIDE, True),      
+    (HEAD_BACK, BODY_BACK, False),     
 ]
 
 for row, (head, body, mirror) in enumerate(directions):
@@ -151,7 +151,6 @@ for row, (head, body, mirror) in enumerate(directions):
 sheet.save(OUT)
 print("Sprite:", OUT, sheet.size)
 
-# Kontrollvorschau (x6, mit Schachbrett-Hintergrund)
 prev = Image.new("RGBA", (sheet.width * 6, sheet.height * 6), (250, 250, 250, 255))
 prev.alpha_composite(sheet.resize((sheet.width * 6, sheet.height * 6), Image.NEAREST))
 prev.convert("RGB").save("preview.png")

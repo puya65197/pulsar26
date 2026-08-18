@@ -4,17 +4,17 @@ const FRAME_W = 16;
 const FRAME_H = 24;
 const DIR_ROW = { down: 0, left: 1, right: 2, up: 3 };
 const WALK_CYCLE = [0, 1, 2, 3];
-const FRAME_TIME = 0.14;      // Sekunden pro Laufframe
-const SPEED = 54;             // Weltpixel pro Sekunde
+const FRAME_TIME = 0.14;
+const SPEED = 54;
 
-// Fusszone (Kollisionsrechteck) relativ zur Spielerposition
+
 const FOOT_W = 10;
 const FOOT_H = 7;
 
 class Player {
   constructor(sprite, x, y) {
     this.sprite = sprite;
-    this.x = x;                 // Weltkoordinaten, Mitte der Fuesse
+    this.x = x;
     this.y = y;
     this.dir = 'down';
     this.moving = false;
@@ -31,7 +31,7 @@ class Player {
     const dy = dir.y * SPEED * dt;
     this.moving = dx !== 0 || dy !== 0;
 
-    // Achsen getrennt pruefen, damit man an Waenden entlanggleitet
+
     if (dx !== 0) {
       const box = this.footBox(this.x + dx, this.y);
       if (!world.boxBlocked(box.left, box.top, box.w, box.h)) this.x += dx;

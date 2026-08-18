@@ -1,5 +1,4 @@
-// Lerninhalte. Struktur siehe README. Diese Datei bearbeitest du,
-// wenn du Fragen, Formeln oder Stationspositionen aendern willst.
+
 window.QUESTIONS = {
   "meta": {
     "titel": "Campus Klarenthal — Lernspiel",

@@ -11,7 +11,7 @@ col = json.loads(re.search(r"window\.COLLISION = (.*);", open("../assets/collisi
 qs = json.loads(re.search(r"window\.QUESTIONS = (.*);", open("../data/questions.js").read(), re.S).group(1))
 
 CELL, gw, gh, grid = col["cell"], col["cols"], col["rows"], col["grid"]
-SPAWN = (206, 312)   # muss zu SPAWN in js/game.js passen
+SPAWN = (206, 312)   
 
 
 def walkable(cx, cy):

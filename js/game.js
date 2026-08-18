@@ -1,8 +1,8 @@
-// Spielschleife, Rendering und Zustandswechsel.
 
 
-const SPAWN = { x: 206, y: 312 };   // offener Schulhof, Pixelkoordinaten auf campus_map.png
-const TARGET_VIEW_W = 232;     // angestrebte sichtbare Weltbreite in Pixeln
+
+const SPAWN = { x: 206, y: 312 };
+const TARGET_VIEW_W = 232;
 const MIN_ZOOM = 2;
 const MAX_ZOOM = 8;
 
@@ -25,8 +25,8 @@ class Game {
     this.world = new World(assets);
     this.player = new Player(assets.player, SPAWN.x, SPAWN.y);
 
-    this.mode = null;          // 'info' | 'quiz'
-    this.state = 'menu';       // 'menu' | 'play' | 'panel'
+    this.mode = null;
+    this.state = 'menu';
     this.mistakes = 0;
     this.zoom = 3;
     this.time = 0;
@@ -120,7 +120,7 @@ class Game {
     this.state = 'play';
   }
 
-  // ---------- Rendering ----------
+
 
   render() {
     const { ctx, canvas, zoom, world } = this;
@@ -158,7 +158,7 @@ class Game {
     ctx.restore();
   }
 
-  /** Debug: blockierte Zellen einblenden (Taste G). */
+
   drawCollisionGrid() {
     const { ctx, world } = this;
     const cell = world.cell;
@@ -174,31 +174,31 @@ class Game {
     }
   }
 
-  /** Merkzettel-Marker: Schatten, Papier, Fachfarbe, Zustand. */
+
   drawStation(station, state) {
     const ctx = this.ctx;
     const bob = Math.round(Math.sin(this.time * 2.2 + station.x * 0.1) * 1.5);
     const x = Math.round(station.x) - 6;
     const y = Math.round(station.y) - 20 + bob;
 
-    // Schatten am Boden
+
     ctx.fillStyle = 'rgba(0,0,0,0.28)';
     ctx.fillRect(x + 2, Math.round(station.y) - 2, 8, 2);
 
-    // Kontur + Papier
+
     ctx.fillStyle = COLORS.ink;
     ctx.fillRect(x - 1, y - 1, 14, 16);
     ctx.fillStyle = state === 'locked' ? COLORS.paperShade : COLORS.paper;
     ctx.fillRect(x, y, 12, 14);
 
-    // Kopfband in der Fachfarbe
+  
     let band = station.subject === 'physik' ? COLORS.physik : COLORS.mathe;
     if (state === 'locked') band = COLORS.locked;
     if (state === 'solved') band = COLORS.solved;
     ctx.fillStyle = band;
     ctx.fillRect(x, y, 12, 4);
 
-    // Zustandssymbol
+
     ctx.fillStyle = COLORS.ink;
     if (state === 'locked') {
       ctx.fillRect(x + 4, y + 7, 4, 4);
@@ -210,7 +210,7 @@ class Game {
       ctx.fillRect(x + 7, y + 7, 2, 2);
       ctx.fillRect(x + 8, y + 6, 2, 2);
     } else {
-      // angedeutete Textzeilen
+
       ctx.fillRect(x + 2, y + 6, 8, 1);
       ctx.fillRect(x + 2, y + 8, 8, 1);
       ctx.fillRect(x + 2, y + 10, 5, 1);

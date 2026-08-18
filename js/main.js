@@ -1,5 +1,4 @@
-// Einstiegspunkt: Menue sofort anzeigen, Bilder im Hintergrund laden.
-// Ein Startknopf wartet notfalls, bis die Bilder da sind.
+
 
 (function () {
   const canvas = document.getElementById('game');
@@ -8,13 +7,13 @@
 
   function fail(message) {
     const text = String(message || '').trim();
-    if (!text) return;                       // leere Ereignisse ignorieren
+    if (!text) return;
     document.getElementById('error-text').textContent = text;
     document.getElementById('error').hidden = false;
     console.error(text);
   }
 
-  // Unerwartete Fehler sichtbar machen, statt das Spiel stumm haengen zu lassen
+
   addEventListener('error', (e) => fail(e.message));
   addEventListener('unhandledrejection', (e) => fail(e.reason && e.reason.message || e.reason));
 

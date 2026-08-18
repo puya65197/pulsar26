@@ -1,6 +1,4 @@
-// Laedt die beiden Bilder. Die Lerndaten und das Kollisionsraster liegen
-// als normale Skripte vor (data/questions.js, assets/collision.js) und
-// stehen beim Start bereits als window.QUESTIONS / window.COLLISION bereit.
+
 
 function loadImage(src) {
   return new Promise((resolve, reject) => {

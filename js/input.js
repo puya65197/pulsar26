@@ -14,9 +14,9 @@ const MAX_SWIPE = 34;     // px, ab hier volle Geschwindigkeit
 class Input {
   constructor(canvas, touchLayer) {
     this.keys = new Set();
-    this.pad = { x: 0, y: 0 };        // Bildschirm-Steuerkreuz
-    this.swipe = { x: 0, y: 0 };      // Wisch-Joystick
-    this.actionPressed = false;       // einmalig pro Druck
+    this.pad = { x: 0, y: 0 };
+    this.swipe = { x: 0, y: 0 };
+    this.actionPressed = false;
     this._touchId = null;
     this._origin = { x: 0, y: 0 };
 
@@ -89,7 +89,7 @@ class Input {
     }
   }
 
-  /** Normierter Richtungsvektor aus allen Eingabequellen. */
+
   direction() {
     let x = this.pad.x + this.swipe.x;
     let y = this.pad.y + this.swipe.y;
@@ -102,7 +102,7 @@ class Input {
     return { x: x / Math.max(len, 1), y: y / Math.max(len, 1) };
   }
 
-  /** true genau einmal pro Tastendruck. */
+
   consumeAction() {
     if (!this.actionPressed) return false;
     this.actionPressed = false;

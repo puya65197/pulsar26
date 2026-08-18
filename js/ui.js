@@ -1,6 +1,3 @@
-// Alle Bildschirmelemente ausserhalb des Canvas: Menue, HUD, Dialoge.
-// Text liegt bewusst im DOM und nicht im Canvas — dadurch ist er
-// auswaehlbar, skalierbar und auf dem Handy lesbar.
 
 const el = (id) => document.getElementById(id);
 
@@ -66,7 +63,6 @@ class UI {
     this.setHint(null);
   }
 
-  // ---------- Info-Modus ----------
 
   showInfo(station, onClose) {
     this._open(station.subject);
@@ -92,7 +88,7 @@ class UI {
     this.panel.scrollTop = 0;
   }
 
-  // ---------- Quiz-Modus ----------
+
 
   showQuiz(station, onFinish) {
     this._open(station.subject);
@@ -179,7 +175,7 @@ class UI {
     render();
   }
 
-  // ---------- Abschluss ----------
+
 
   showFinish(mode, { done, total }, mistakes, onMenu) {
     this._open('');
@@ -204,7 +200,7 @@ function escapeHtml(text) {
   ));
 }
 
-/** Akzeptiert deutsche Kommazahlen ("19,6") und Punktschreibweise ("19.6"). */
+
 function parseGerman(raw) {
   const cleaned = String(raw).trim().replace(/\s/g, '').replace(',', '.');
   if (cleaned === '' || !/^-?\d*\.?\d+$/.test(cleaned)) return null;

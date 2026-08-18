@@ -14,13 +14,11 @@
 
   <canvas id="game" aria-label="Spielfeld: Campus Klarenthal von oben"></canvas>
 
-  <!-- Fehlermeldung, nur im Problemfall sichtbar -->
   <div id="error" hidden>
     <p class="load-title">Etwas ist schiefgelaufen</p>
     <p class="load-text" id="error-text"></p>
   </div>
 
-  <!-- Startbildschirm -->
   <div id="menu" hidden>
     <div class="menu-box">
       <p class="menu-eyebrow">Physik &amp; Mathematik · Klasse 10–12</p>
@@ -51,7 +49,6 @@
     </div>
   </div>
 
-  <!-- Kopfleiste im Spiel -->
   <div id="hud" hidden>
     <div class="hud-row">
       <span id="hud-mode">Info-Modus</span>
@@ -60,10 +57,8 @@
     <div class="hud-bar"><div id="hud-bar-fill"></div></div>
   </div>
 
-  <!-- Interaktionshinweis -->
   <p id="hint" hidden></p>
 
-  <!-- Touch-Steuerung -->
   <div id="touch" hidden>
     <div class="dpad">
       <button class="dbtn dbtn-up"    data-dir="0,-1" aria-label="hoch"></button>
@@ -74,14 +69,12 @@
     <button class="abtn" data-action aria-label="Station öffnen">E</button>
   </div>
 
-  <!-- Dialogfenster -->
   <div id="overlay" hidden>
     <div id="panel" role="dialog" aria-modal="true"></div>
   </div>
 
   <p id="credit">Kartengrundlage: Satellitenbild © Google Earth</p>
 
-  <!-- Daten zuerst, dann die Spielklassen, zuletzt der Einstiegspunkt -->
   <script src="data/questions.js"></script>
   <script src="assets/collision.js"></script>
   <script src="js/assets.js"></script>
