@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <title>PULSAR — Lernspiel Physik &amp; Mathe, Campus Klarenthal</title>
+  <meta name="description" content="Lernspiel für Physik und Mathematik, Klasse 10-12, auf dem Gelände des Campus Klarenthal.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <canvas id="game" aria-label="Spielfeld: Campus Klarenthal von oben"></canvas>
+
+  <!-- Fehlermeldung, nur im Problemfall sichtbar -->
+  <div id="error" hidden>
+    <p class="load-title">Etwas ist schiefgelaufen</p>
+    <p class="load-text" id="error-text"></p>
+  </div>
+
+  <!-- Startbildschirm -->
+  <div id="menu" hidden>
+    <div class="menu-box">
+      <p class="menu-eyebrow">Physik &amp; Mathematik · Klasse 10–12</p>
+      <h1 class="menu-title">PULSAR</h1>
+      <p class="menu-place">Campus Klarenthal</p>
+      <p class="menu-text">
+        Lauf über das Schulgelände und arbeite die zwölf Stationen ab —
+        sechs in Physik, sechs in Mathematik.
+      </p>
+      <div class="menu-buttons">
+        <button class="btn btn-mode" data-mode="info">
+          <span class="btn-label">Info-Modus</span>
+          <span class="btn-sub">Formeln und Merksätze nachlesen</span>
+        </button>
+        <button class="btn btn-mode" data-mode="quiz">
+          <span class="btn-label">Quiz-Modus</span>
+          <span class="btn-sub">Aufgaben lösen, Stationen freischalten</span>
+        </button>
+      </div>
+      <p class="menu-credits">
+        Ein Projekt von Puya Darafshan, Maxi Stoll,
+        Ferdinand Ploss und Henry Benninghaus
+      </p>
+      <p class="menu-controls">
+        <strong>PC:</strong> WASD oder Pfeiltasten, <kbd>E</kbd> zum Öffnen ·
+        <strong>Handy:</strong> wischen oder Steuerkreuz
+      </p>
+    </div>
+  </div>
+
+  <!-- Kopfleiste im Spiel -->
+  <div id="hud" hidden>
+    <div class="hud-row">
+      <span id="hud-mode">Info-Modus</span>
+      <span id="hud-progress">0 / 12</span>
+    </div>
+    <div class="hud-bar"><div id="hud-bar-fill"></div></div>
+  </div>
+
+  <!-- Interaktionshinweis -->
+  <p id="hint" hidden></p>
+
+  <!-- Touch-Steuerung -->
+  <div id="touch" hidden>
+    <div class="dpad">
+      <button class="dbtn dbtn-up"    data-dir="0,-1" aria-label="hoch"></button>
+      <button class="dbtn dbtn-left"  data-dir="-1,0" aria-label="links"></button>
+      <button class="dbtn dbtn-right" data-dir="1,0"  aria-label="rechts"></button>
+      <button class="dbtn dbtn-down"  data-dir="0,1"  aria-label="runter"></button>
+    </div>
+    <button class="abtn" data-action aria-label="Station öffnen">E</button>
+  </div>
+
+  <!-- Dialogfenster -->
+  <div id="overlay" hidden>
+    <div id="panel" role="dialog" aria-modal="true"></div>
+  </div>
+
+  <p id="credit">Kartengrundlage: Satellitenbild © Google Earth</p>
+
+  <!-- Daten zuerst, dann die Spielklassen, zuletzt der Einstiegspunkt -->
+  <script src="data/questions.js"></script>
+  <script src="assets/collision.js"></script>
+  <script src="js/assets.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/player.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

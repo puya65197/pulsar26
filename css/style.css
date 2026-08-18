@@ -1,0 +1,467 @@
+/* Campus Klarenthal — Lernspiel
+   Farbwelt aus der Karte: Sandstein, Dachziegel, Klostergrün, Waldschatten.
+   'Press Start 2P' nur für Überschriften und Bedienelemente; Fließtext in
+   einer Leseschrift, weil Pixelschrift in Absätzen unlesbar wird. */
+
+:root {
+  --ink: #14181f;
+  --ink-soft: #2a3140;
+  --paper: #f3ead6;
+  --paper-dim: #ddd0b3;
+  --brass: #d8a13a;
+  --physik: #3f7fbf;
+  --mathe: #c1614a;
+  --ok: #4e9a4b;
+  --bad: #b8433a;
+  --pixel: 'Press Start 2P', monospace;
+  --read: ui-sans-serif, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+* { box-sizing: border-box; }
+
+/* Muss vor allen display-Regeln stehen und sie schlagen:
+   sonst ueberschreibt eine ID-Regel wie "#menu { display: grid }"
+   das HTML-Attribut hidden, und das Element bleibt sichtbar. */
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #0d1015;
+  color: var(--paper);
+  font-family: var(--read);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
+#game {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  touch-action: none;
+}
+
+/* ---------- Pixel-Rahmen (gemeinsame Grundform) ---------- */
+
+.pixel-frame,
+.menu-box,
+#panel,
+#hud,
+.btn,
+.option,
+.abtn,
+.dbtn {
+  border: 0;
+  border-radius: 0;
+  box-shadow:
+    0 0 0 3px var(--ink),
+    0 0 0 6px var(--ink-soft);
+}
+
+/* ---------- Fehlermeldung ---------- */
+
+#error {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+  background: #0d1015;
+  z-index: 40;
+}
+.load-title { font-family: var(--pixel); font-size: 13px; margin: 0; }
+.load-text { margin: 0; font-size: 14px; color: var(--paper-dim); max-width: 34ch; }
+
+/* ---------- Startbildschirm ---------- */
+
+#menu {
+  touch-action: pan-y;
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle at 50% 30%, #2d3a2c 0%, #141a18 60%, #0d1015 100%);
+  z-index: 30;
+  overflow-y: auto;
+}
+
+.menu-box {
+  width: min(560px, 100%);
+  background: var(--ink);
+  padding: 28px 24px;
+  margin: 12px;
+}
+
+.menu-eyebrow {
+  font-family: var(--pixel);
+  font-size: 8px;
+  line-height: 1.7;
+  color: var(--brass);
+  margin: 0 0 14px;
+  letter-spacing: 0.04em;
+}
+
+.menu-title {
+  font-family: var(--pixel);
+  font-size: clamp(20px, 6vw, 30px);
+  line-height: 1.5;
+  margin: 0 0 18px;
+  color: var(--paper);
+  text-shadow: 3px 3px 0 var(--mathe);
+}
+
+.menu-place {
+  font-family: var(--pixel);
+  font-size: 10px;
+  line-height: 1.7;
+  margin: -8px 0 20px;
+  color: var(--brass);
+}
+
+.menu-credits {
+  margin: 20px 0 0;
+  padding-top: 16px;
+  border-top: 3px solid var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--paper-dim);
+}
+
+.menu-text {
+  margin: 0 0 22px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--paper-dim);
+  max-width: 46ch;
+}
+
+.menu-buttons { display: grid; gap: 16px; }
+
+.btn-mode {
+  display: grid;
+  gap: 6px;
+  text-align: left;
+  padding: 14px 16px;
+}
+.btn-label { font-family: var(--pixel); font-size: 11px; }
+.btn-sub { font-family: var(--read); font-size: 13px; opacity: 0.75; }
+
+.menu-controls {
+  margin: 22px 0 0;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--paper-dim);
+}
+.menu-controls strong { color: var(--paper); }
+
+kbd {
+  font-family: var(--mono);
+  background: var(--ink-soft);
+  padding: 1px 5px;
+  border-bottom: 2px solid #000;
+}
+
+/* ---------- Buttons ---------- */
+
+.btn, .option {
+  font-family: var(--pixel);
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--paper);
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: transform 0.05s steps(1);
+}
+.btn:hover, .option:hover:not(:disabled) { background: #fff8e8; }
+.btn:active, .option:active:not(:disabled) { transform: translate(2px, 2px); }
+.btn:focus-visible, .option:focus-visible { outline: 3px solid var(--brass); outline-offset: 4px; }
+.option:disabled { cursor: default; opacity: 0.85; }
+
+/* ---------- HUD ---------- */
+
+#hud {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  max-width: 340px;
+  background: var(--ink);
+  padding: 10px 12px;
+  z-index: 10;
+}
+.hud-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--pixel);
+  font-size: 9px;
+  color: var(--paper);
+}
+.hud-bar {
+  margin-top: 8px;
+  height: 6px;
+  background: var(--ink-soft);
+}
+#hud-bar-fill {
+  height: 100%;
+  width: 0;
+  background: var(--brass);
+  transition: width 0.25s steps(8);
+}
+
+#hint {
+  position: fixed;
+  left: 50%;
+  bottom: calc(20px + var(--safe-b));
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 9px 14px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--pixel);
+  font-size: 9px;
+  line-height: 1.6;
+  text-align: center;
+  max-width: min(90vw, 420px);
+  box-shadow: 0 0 0 3px var(--brass);
+  z-index: 10;
+  pointer-events: none;
+}
+
+#credit {
+  position: fixed;
+  right: 8px;
+  bottom: calc(4px + var(--safe-b));
+  margin: 0;
+  font-size: 10px;
+  color: rgba(243, 234, 214, 0.5);
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* ---------- Touch-Steuerung ---------- */
+
+#touch {
+  position: fixed;
+  inset: auto 0 0 0;
+  padding: 0 18px calc(22px + var(--safe-b));
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  z-index: 12;
+  pointer-events: none;
+}
+#touch > * { pointer-events: auto; }
+
+.dpad {
+  position: relative;
+  width: 132px;
+  height: 132px;
+}
+.dbtn {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  background: rgba(243, 234, 214, 0.82);
+  cursor: pointer;
+}
+.dbtn.is-down { background: var(--brass); }
+.dbtn-up    { left: 44px; top: 0; }
+.dbtn-left  { left: 0; top: 44px; }
+.dbtn-right { left: 88px; top: 44px; }
+.dbtn-down  { left: 44px; top: 88px; }
+
+.dbtn::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 0; height: 0;
+  border: 8px solid transparent;
+}
+.dbtn-up::after    { border-bottom-color: var(--ink); transform: translate(-50%, -70%); }
+.dbtn-down::after  { border-top-color: var(--ink);    transform: translate(-50%, -30%); }
+.dbtn-left::after  { border-right-color: var(--ink);  transform: translate(-70%, -50%); }
+.dbtn-right::after { border-left-color: var(--ink);   transform: translate(-30%, -50%); }
+
+.abtn {
+  width: 74px;
+  height: 74px;
+  background: var(--brass);
+  color: var(--ink);
+  font-family: var(--pixel);
+  font-size: 16px;
+  cursor: pointer;
+}
+.abtn:active { background: #f0bb52; }
+
+/* Auf Geräten mit Maus stört das Steuerkreuz nur */
+@media (hover: hover) and (pointer: fine) {
+  #touch { display: none; }
+}
+
+/* ---------- Dialogfenster ---------- */
+
+#overlay {
+  touch-action: pan-y;
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(8, 11, 15, 0.82);
+  z-index: 20;
+}
+
+#panel {
+  touch-action: pan-y;
+  width: min(620px, 100%);
+  max-height: min(84vh, 760px);
+  overflow-y: auto;
+  background: var(--paper);
+  color: var(--ink);
+  padding: 24px 22px;
+  -webkit-overflow-scrolling: touch;
+}
+#panel[data-subject="physik"] { border-top: 8px solid var(--physik); }
+#panel[data-subject="mathe"]  { border-top: 8px solid var(--mathe); }
+
+.panel-eyebrow {
+  font-family: var(--pixel);
+  font-size: 8px;
+  line-height: 1.7;
+  margin: 0 0 12px;
+  color: var(--ink-soft);
+  letter-spacing: 0.03em;
+}
+.panel-title {
+  font-family: var(--pixel);
+  font-size: clamp(13px, 3.6vw, 16px);
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+.panel-sub {
+  font-family: var(--pixel);
+  font-size: 9px;
+  line-height: 1.7;
+  margin: 24px 0 10px;
+  color: var(--ink-soft);
+}
+.panel-intro, .panel-question {
+  margin: 0 0 18px;
+  font-size: 16px;
+  line-height: 1.65;
+}
+.panel-question { font-weight: 600; }
+
+.formula-list, .note-list, .option-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.formula-list li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  background: var(--paper-dim);
+  padding: 9px 11px;
+}
+.formula-list code {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 600;
+}
+.formula-list span { font-size: 13px; color: var(--ink-soft); }
+
+.note-list li {
+  font-size: 15px;
+  line-height: 1.6;
+  padding-left: 18px;
+  position: relative;
+}
+.note-list li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 9px;
+  width: 6px; height: 6px;
+  background: var(--brass);
+}
+
+.option-list { gap: 10px; margin-top: 4px; }
+.option { width: 100%; text-align: left; }
+.option.is-right { background: var(--ok); color: var(--paper); }
+.option.is-wrong { background: var(--bad); color: var(--paper); }
+
+.number-input {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.number-input input {
+  flex: 1 1 140px;
+  min-width: 0;
+  font-family: var(--mono);
+  font-size: 18px;
+  padding: 11px 12px;
+  color: var(--ink);
+  background: #fff;
+  border: 3px solid var(--ink);
+  border-radius: 0;
+}
+.number-input input.is-invalid { border-color: var(--bad); }
+.number-input input:disabled { background: var(--paper-dim); }
+.number-input .unit {
+  font-family: var(--mono);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.feedback {
+  margin-top: 20px;
+  padding: 14px 16px;
+  border-left: 8px solid var(--ok);
+  background: var(--paper-dim);
+}
+.feedback.is-wrong { border-left-color: var(--bad); }
+.feedback-verdict {
+  font-family: var(--pixel);
+  font-size: 10px;
+  margin: 0 0 10px;
+}
+.feedback-text { margin: 0 0 14px; font-size: 15px; line-height: 1.6; }
+
+.panel-actions { margin-top: 26px; }
+
+@media (max-width: 480px) {
+  #panel { padding: 20px 16px; }
+  #hud { max-width: none; }
+  .dpad { width: 120px; height: 120px; }
+  .dbtn { width: 40px; height: 40px; }
+  .dbtn-up { left: 40px; } .dbtn-left { top: 40px; }
+  .dbtn-right { left: 80px; top: 40px; } .dbtn-down { left: 40px; top: 80px; }
+  .abtn { width: 66px; height: 66px; }
+  #hint { bottom: calc(170px + var(--safe-b)); font-size: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
