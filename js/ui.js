@@ -58,6 +58,7 @@ class UI {
   _open(subject) {
     this.overlay.hidden = false;
     this.panel.dataset.subject = subject || '';
+    this.panel.classList.remove('panel-win');
     this.panel.innerHTML = '';
     this.openPanel = true;
     this.setHint(null);
@@ -177,21 +178,119 @@ class UI {
 
 
 
-  showFinish(mode, { done, total }, mistakes, onMenu) {
+  showFinish(mode, { done, total }, mistakes, elapsedSeconds, onMenu) {
     this._open('');
     this._onClose = onMenu;
-    const title = mode === 'quiz' ? 'Alle Stationen gelöst' : 'Alle Stationen gelesen';
-    const detail = mode === 'quiz'
-      ? `${total} Stationen abgeschlossen, ${mistakes} Fehlversuche insgesamt.`
-      : `Du hast alle ${total} Infopunkte auf dem Campus besucht.`;
+    const isQuiz = mode === 'quiz';
+    const title = isQuiz ? 'Alle Stationen gelöst!' : 'Alle Stationen gelesen';
+
+    this.panel.classList.toggle('panel-win', isQuiz);
+
+    if (!isQuiz) {
+      this.panel.innerHTML = `
+        <p class="panel-eyebrow">Geschafft</p>
+        <h2 class="panel-title">${title}</h2>
+        <p class="panel-intro">Du hast alle ${total} Infopunkte auf dem Campus besucht.</p>
+        <div class="panel-actions"><button class="btn" data-close>Zurück zum Menü</button></div>
+      `;
+      this.panel.querySelector('[data-close]').addEventListener('click', () => this.close());
+      return;
+    }
+
+    const time = formatTime(elapsedSeconds);
     this.panel.innerHTML = `
+      <p class="win-trophy">🏆</p>
       <p class="panel-eyebrow">Geschafft</p>
       <h2 class="panel-title">${title}</h2>
-      <p class="panel-intro">${detail}</p>
+      <div class="win-stats">
+        <div class="win-stat">
+          <span class="win-stat-value">${time}</span>
+          <span class="win-stat-label">Gesamtzeit</span>
+        </div>
+        <div class="win-stat">
+          <span class="win-stat-value">${total}</span>
+          <span class="win-stat-label">Stationen</span>
+        </div>
+        <div class="win-stat">
+          <span class="win-stat-value">${mistakes}</span>
+          <span class="win-stat-label">Fehlversuche</span>
+        </div>
+      </div>
       <div class="panel-actions"><button class="btn" data-close>Zurück zum Menü</button></div>
     `;
     this.panel.querySelector('[data-close]').addEventListener('click', () => this.close());
+    fireConfetti();
   }
+}
+
+function formatTime(seconds) {
+  const total = Math.max(0, Math.round(seconds || 0));
+  const m = Math.floor(total / 60);
+  const s = total % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+let confettiCanvas = null;
+let confettiCtx = null;
+let confettiFrame = null;
+
+function fireConfetti() {
+  if (!confettiCanvas) {
+    confettiCanvas = document.getElementById('confetti');
+    confettiCtx = confettiCanvas?.getContext('2d');
+  }
+  if (!confettiCanvas || !confettiCtx) return;
+
+  cancelAnimationFrame(confettiFrame);
+  const dpr = window.devicePixelRatio || 1;
+  confettiCanvas.width = innerWidth * dpr;
+  confettiCanvas.height = innerHeight * dpr;
+  confettiCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  confettiCanvas.hidden = false;
+
+  const colors = ['#d8a13a', '#3f7fbf', '#c1614a', '#4e9a4b', '#f3ead6'];
+  const count = 140;
+  const particles = Array.from({ length: count }, () => ({
+    x: Math.random() * innerWidth,
+    y: -20 - Math.random() * innerHeight * 0.5,
+    w: 5 + Math.random() * 5,
+    h: 8 + Math.random() * 8,
+    color: colors[(Math.random() * colors.length) | 0],
+    vy: 90 + Math.random() * 140,
+    vx: (Math.random() - 0.5) * 80,
+    rot: Math.random() * Math.PI * 2,
+    vrot: (Math.random() - 0.5) * 8,
+  }));
+
+  const duration = 3200;
+  const start = performance.now();
+
+  const step = (now) => {
+    const elapsed = now - start;
+    confettiCtx.clearRect(0, 0, innerWidth, innerHeight);
+
+    for (const p of particles) {
+      p.x += p.vx * 0.016;
+      p.y += p.vy * 0.016;
+      p.vy += 60 * 0.016;
+      p.rot += p.vrot * 0.016;
+
+      confettiCtx.save();
+      confettiCtx.translate(p.x, p.y);
+      confettiCtx.rotate(p.rot);
+      confettiCtx.fillStyle = p.color;
+      confettiCtx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+      confettiCtx.restore();
+    }
+
+    if (elapsed < duration) {
+      confettiFrame = requestAnimationFrame(step);
+    } else {
+      confettiCtx.clearRect(0, 0, innerWidth, innerHeight);
+      confettiCanvas.hidden = true;
+    }
+  };
+  confettiFrame = requestAnimationFrame(step);
 }
 
 function escapeHtml(text) {

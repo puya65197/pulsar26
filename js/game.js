@@ -32,6 +32,7 @@ class Game {
     this.time = 0;
     this._last = 0;
     this.showGrid = false;
+    this.quizStartTime = null;
 
     addEventListener('keydown', (e) => {
       if (e.code === 'KeyG') this.showGrid = !this.showGrid;
@@ -45,6 +46,7 @@ class Game {
     this.mode = mode;
     this.state = 'play';
     this.mistakes = 0;
+    this.quizStartTime = mode === 'quiz' ? Date.now() : null;
     this.world.reset();
     this.player.x = SPAWN.x;
     this.player.y = SPAWN.y;
@@ -109,12 +111,21 @@ class Game {
     this.ui.setHud(this.mode, this.world.progress(this.mode));
   }
 
+  debugFinishQuiz() {
+    if (this.mode !== 'quiz') { console.warn('[debug] Nicht im Quiz-Modus.'); return; }
+    for (const s of this.world.stations) s.solved = true;
+    this.afterPanel();
+  }
+
   afterPanel() {
     const progress = this.world.progress(this.mode);
     this.ui.setHud(this.mode, progress);
     if (progress.done === progress.total) {
       this.state = 'panel';
-      this.ui.showFinish(this.mode, progress, this.mistakes, () => this.toMenu());
+      const elapsed = this.mode === 'quiz' && this.quizStartTime
+        ? (Date.now() - this.quizStartTime) / 1000
+        : null;
+      this.ui.showFinish(this.mode, progress, this.mistakes, elapsed, () => this.toMenu());
       return;
     }
     this.state = 'play';

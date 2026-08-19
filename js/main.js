@@ -21,6 +21,7 @@
     const input = new Input(canvas, document.getElementById('touch'));
     game = new Game(canvas, assets, input, ui);
     game.run();
+    window.finishQuiz = () => game.debugFinishQuiz();
   });
 
   ui.showMenu(true);
