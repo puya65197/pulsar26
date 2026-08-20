@@ -2,7 +2,7 @@
 
 
 const SPAWN = { x: 206, y: 312 };
-const TARGET_VIEW_W = 232;
+const TARGET_VIEW_W = 300;
 const MIN_ZOOM = 2;
 const MAX_ZOOM = 8;
 
